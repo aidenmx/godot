@@ -6546,15 +6546,17 @@ static Node *_resource_get_edited_scene() {
 	return EditorNode::get_singleton()->get_edited_scene();
 }
 
-void EditorNode::_print_handler(void *p_this, const String &p_string, bool p_error, bool p_rich) {
-	callable_mp_static(&EditorNode::_print_handler_impl).call_deferred(p_string, p_error, p_rich);
+void EditorNode::_print_handler(void *p_this, const String &p_string, bool p_warn, bool p_error, bool p_rich) {
+	callable_mp_static(&EditorNode::_print_handler_impl).call_deferred(p_string, p_warn, p_error, p_rich);
 }
 
-void EditorNode::_print_handler_impl(const String &p_string, bool p_error, bool p_rich) {
+void EditorNode::_print_handler_impl(const String &p_string, bool p_warn, bool p_error, bool p_rich) {
 	if (!singleton) {
 		return;
 	}
-	if (p_error) {
+	if (p_warn) {
+		singleton->log->add_message(p_string, EditorLog::MSG_TYPE_WARNING);
+	} else if (p_error) {
 		singleton->log->add_message(p_string, EditorLog::MSG_TYPE_ERROR);
 	} else if (p_rich) {
 		singleton->log->add_message(p_string, EditorLog::MSG_TYPE_STD_RICH);

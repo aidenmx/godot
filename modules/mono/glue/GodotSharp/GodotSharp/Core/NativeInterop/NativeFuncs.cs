@@ -523,6 +523,8 @@ namespace Godot.NativeInterop
 
         public static partial void godotsharp_print_rich(in godot_string p_what);
 
+        internal static partial void godotsharp_print_warn(in godot_string p_what);
+
         internal static partial void godotsharp_printerr(in godot_string p_what);
 
         internal static partial void godotsharp_printraw(in godot_string p_what);

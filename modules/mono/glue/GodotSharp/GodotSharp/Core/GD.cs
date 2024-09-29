@@ -251,6 +251,16 @@ namespace Godot
         }
 
         /// <summary>
+        /// Prints a warning message to the console.
+        /// </summary>
+        /// <param name="what">Message that will be printed.</param>
+        public static void PrintWarn(string what)
+        {
+            using var godotStr = Marshaling.ConvertStringToNative(what);
+            NativeFuncs.godotsharp_print_warn(godotStr);
+        }
+
+        /// <summary>
         /// Prints a message to standard error line.
         /// </summary>
         /// <param name="what">Message that will be printed.</param>

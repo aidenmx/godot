@@ -78,7 +78,7 @@ void __print_line(const String &p_string) {
 	_global_lock();
 	PrintHandlerList *l = print_handler_list;
 	while (l) {
-		l->printfunc(l->userdata, p_string, false, false);
+		l->printfunc(l->userdata, p_string, false, false, false);
 		l = l->next;
 	}
 
@@ -171,7 +171,24 @@ void __print_line_rich(const String &p_string) {
 	_global_lock();
 	PrintHandlerList *l = print_handler_list;
 	while (l) {
-		l->printfunc(l->userdata, p_string, false, true);
+		l->printfunc(l->userdata, p_string, false, false, true);
+		l = l->next;
+	}
+
+	_global_unlock();
+}
+
+void print_warn(const String &p_string) {
+	if (!CoreGlobals::print_line_enabled) {
+		return;
+	}
+
+	OS::get_singleton()->print_rich("\u001b[93m%s\u001b[0m\n", p_string.utf8().get_data());
+
+	_global_lock();
+	PrintHandlerList *l = print_handler_list;
+	while (l) {
+		l->printfunc(l->userdata, p_string, true, false, false);
 		l = l->next;
 	}
 
@@ -188,7 +205,7 @@ void print_error(const String &p_string) {
 	_global_lock();
 	PrintHandlerList *l = print_handler_list;
 	while (l) {
-		l->printfunc(l->userdata, p_string, true, false);
+		l->printfunc(l->userdata, p_string, false, true, false);
 		l = l->next;
 	}
 

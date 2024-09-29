@@ -35,7 +35,7 @@
 
 extern void (*_print_func)(String);
 
-typedef void (*PrintHandlerFunc)(void *, const String &p_string, bool p_error, bool p_rich);
+typedef void (*PrintHandlerFunc)(void *, const String &p_string, bool p_warn, bool p_error, bool p_rich);
 
 struct PrintHandlerList {
 	PrintHandlerFunc printfunc = nullptr;
@@ -58,6 +58,7 @@ void remove_print_handler(const PrintHandlerList *p_handler);
 
 extern void __print_line(const String &p_string);
 extern void __print_line_rich(const String &p_string);
+extern void print_warn(const String &p_string);
 extern void print_error(const String &p_string);
 extern bool is_print_verbose_enabled();
 

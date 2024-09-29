@@ -1333,6 +1333,10 @@ void godotsharp_print_rich(const godot_string *p_what) {
 	print_line_rich(*reinterpret_cast<const String *>(p_what));
 }
 
+void godotsharp_print_warn(const godot_string *p_what) {
+	print_warn(*reinterpret_cast<const String *>(p_what));
+}
+
 void godotsharp_printerr(const godot_string *p_what) {
 	print_error(*reinterpret_cast<const String *>(p_what));
 }
@@ -1631,6 +1635,7 @@ static const void *unmanaged_callbacks[]{
 	(void *)godotsharp_instance_from_id,
 	(void *)godotsharp_print,
 	(void *)godotsharp_print_rich,
+	(void *)godotsharp_print_warn,
 	(void *)godotsharp_printerr,
 	(void *)godotsharp_printraw,
 	(void *)godotsharp_prints,

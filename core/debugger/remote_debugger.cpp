@@ -128,7 +128,7 @@ void RemoteDebugger::_err_handler(void *p_this, const char *p_func, const char *
 	rd->script_debugger->send_error(String::utf8(p_func), String::utf8(p_file), p_line, String::utf8(p_err), String::utf8(p_descr), p_editor_notify, p_type, si);
 }
 
-void RemoteDebugger::_print_handler(void *p_this, const String &p_string, bool p_error, bool p_rich) {
+void RemoteDebugger::_print_handler(void *p_this, const String &p_string, bool p_warn, bool p_error, bool p_rich) {
 	RemoteDebugger *rd = static_cast<RemoteDebugger *>(p_this);
 
 	if (rd->flushing && Thread::get_caller_id() == rd->flush_thread) { // Can't handle recursive prints during flush.
@@ -157,7 +157,9 @@ void RemoteDebugger::_print_handler(void *p_this, const String &p_string, bool p
 
 		OutputString output_string;
 		output_string.message = s;
-		if (p_error) {
+		if (p_warn) {
+			output_string.type = MESSAGE_TYPE_WARNING;
+		} else if (p_error) {
 			output_string.type = MESSAGE_TYPE_ERROR;
 		} else if (p_rich) {
 			output_string.type = MESSAGE_TYPE_LOG_RICH;
@@ -208,22 +210,14 @@ void RemoteDebugger::flush_output() {
 		Vector<String> strings;
 		Vector<int> types;
 		for (const OutputString &output_string : output_strings) {
-			if (output_string.type == MESSAGE_TYPE_ERROR) {
+			if (output_string.type != MESSAGE_TYPE_LOG) {
 				if (!joined_log_strings.is_empty()) {
 					strings.push_back(String("\n").join(joined_log_strings));
 					types.push_back(MESSAGE_TYPE_LOG);
 					joined_log_strings.clear();
 				}
 				strings.push_back(output_string.message);
-				types.push_back(MESSAGE_TYPE_ERROR);
-			} else if (output_string.type == MESSAGE_TYPE_LOG_RICH) {
-				if (!joined_log_strings.is_empty()) {
-					strings.push_back(String("\n").join(joined_log_strings));
-					types.push_back(MESSAGE_TYPE_LOG_RICH);
-					joined_log_strings.clear();
-				}
-				strings.push_back(output_string.message);
-				types.push_back(MESSAGE_TYPE_LOG_RICH);
+				types.push_back(output_string.type);
 			} else {
 				joined_log_strings.push_back(output_string.message);
 			}

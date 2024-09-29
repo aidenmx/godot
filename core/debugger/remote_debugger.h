@@ -45,6 +45,7 @@ public:
 		MESSAGE_TYPE_LOG,
 		MESSAGE_TYPE_ERROR,
 		MESSAGE_TYPE_LOG_RICH,
+		MESSAGE_TYPE_WARNING,
 	};
 
 private:
@@ -93,7 +94,7 @@ private:
 	Array _get_message();
 
 	PrintHandlerList phl;
-	static void _print_handler(void *p_this, const String &p_string, bool p_error, bool p_rich);
+	static void _print_handler(void *p_this, const String &p_string, bool p_warn, bool p_error, bool p_rich);
 	ErrorHandlerList eh;
 	static void _err_handler(void *p_this, const char *p_func, const char *p_file, int p_line, const char *p_err, const char *p_descr, bool p_editor_notify, ErrorHandlerType p_type);
 

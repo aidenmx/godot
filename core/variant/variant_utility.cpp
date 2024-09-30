@@ -1015,6 +1015,22 @@ void VariantUtilityFunctions::print_verbose(const Variant **p_args, int p_arg_co
 	r_error.error = Callable::CallError::CALL_OK;
 }
 
+void VariantUtilityFunctions::printwarn(const Variant **p_args, int p_arg_count, Callable::CallError &r_error) {
+	String s;
+	for (int i = 0; i < p_arg_count; i++) {
+		String os = p_args[i]->operator String();
+
+		if (i == 0) {
+			s = os;
+		} else {
+			s += os;
+		}
+	}
+
+	print_warn(s);
+	r_error.error = Callable::CallError::CALL_OK;
+}
+
 void VariantUtilityFunctions::printerr(const Variant **p_args, int p_arg_count, Callable::CallError &r_error) {
 	String s;
 	for (int i = 0; i < p_arg_count; i++) {
@@ -1800,6 +1816,7 @@ void Variant::_register_variant_utility_functions() {
 	FUNCBINDR(type_string, sarray("type"), Variant::UTILITY_FUNC_TYPE_GENERAL);
 	FUNCBINDVARARGV(print, sarray(), Variant::UTILITY_FUNC_TYPE_GENERAL);
 	FUNCBINDVARARGV(print_rich, sarray(), Variant::UTILITY_FUNC_TYPE_GENERAL);
+	FUNCBINDVARARGV(printwarn, sarray(), Variant::UTILITY_FUNC_TYPE_GENERAL);
 	FUNCBINDVARARGV(printerr, sarray(), Variant::UTILITY_FUNC_TYPE_GENERAL);
 	FUNCBINDVARARGV(printt, sarray(), Variant::UTILITY_FUNC_TYPE_GENERAL);
 	FUNCBINDVARARGV(prints, sarray(), Variant::UTILITY_FUNC_TYPE_GENERAL);

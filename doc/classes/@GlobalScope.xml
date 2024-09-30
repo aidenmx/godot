@@ -946,6 +946,19 @@
 				[/codeblocks]
 			</description>
 		</method>
+		<method name="printwarn" qualifiers="vararg">
+			<description>
+				Prints a warning message to Godot's editor console and the OS terminal.
+				[codeblocks]
+				[gdscript]
+				printwarn("print warning")
+				[/gdscript]
+				[csharp]
+				GD.PrintWarn("print warning");
+				[/csharp]
+				[/codeblocks]
+			</description>
+		</method>
 		<method name="push_error" qualifiers="vararg">
 			<description>
 				Pushes an error message to Godot's built-in debugger and to the OS terminal.
